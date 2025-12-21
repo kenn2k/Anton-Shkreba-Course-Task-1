@@ -66,6 +66,7 @@
 //! За допомогою splice вставити на 5-ту позицію слово "answer". За допомогою find знайти це слово і вивести його у консоль.
 
 // const arrayOfElements = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
 // console.log(arrayOfElements.fill(42));
 
 // arrayOfElements.splice(4, 0, "answer");
