@@ -363,21 +363,42 @@ myBike.stop();
 ! Посередині відображається номер поточної сторінки. Він обчислюється зі значення поля data.info.next. Якщо це поле undefined, відображаємо data.info.pages (це остання сторінка).
 */
 
+//? ===================================================================================================================
+//? HOME TASK 4
+//? ===================================================================================================================
+
+/*
+!За основу беремо минуле домашнє завдання. І змінюємо функціонал так:
+! - При натисканні на картку відкриваємо модальне вікно, у вікні відображаємо картинку персонажа, ім'я, статус. (Щоразу робимо новий запит за ID, подія не повинна підніматися вище картки https://rickandmortyapi.com/documentation/#get-a-single-character)
+! - У модальному вікні є кнопка "Закрити", вона закриває це вікно.
+! - Клік за межами вікна також закриває вікно.
+! Для обробки подій використовуємо event delegation.
+! Пагінацію змінюємо на ліниве завантаження за типом Instagram:
+! - при прокрутці донизу списку, підвантажуємо ще порцію карток.
+*/
+
 console.log("HOME TASK: WORKING WITH DOM");
 
 const url = "https://rickandmortyapi.com/api/character";
 
 const container = document.getElementById("characters");
 const loading = document.getElementById("loading");
-const nextBtn = document.getElementById("next");
-const prevBtn = document.getElementById("prev");
-const pageLabel = document.getElementById("page");
+
+const modal = document.getElementById("modal");
+const modalImage = document.getElementById("modal-image");
+const modalName = document.getElementById("modal-name");
+const modalStatus = document.getElementById("modal-status");
+const closeModalBtn = document.getElementById("close-modal");
 
 let currentPage = 1;
+let isLoading = false;
+let hasNextPage = true;
 
 function loadPage(page) {
+  if (isLoading || !hasNextPage) return;
+
+  isLoading = true;
   loading.style.display = "block";
-  container.innerHTML = "";
 
   const response = fetch(`${url}?page=${page}`);
 
@@ -392,10 +413,10 @@ function loadPage(page) {
       data.results.forEach((character) => {
         const row = document.createElement("div");
         row.className = "character-row";
+        row.dataset.id = character.id;
 
         const image = document.createElement("img");
         image.src = character.image;
-        image.alt = character.name;
         image.className = "character-image";
 
         const info = document.createElement("div");
@@ -416,32 +437,51 @@ function loadPage(page) {
         container.appendChild(row);
       });
 
-      if (data.info.next) {
-        const nextUrl = new URL(data.info.next);
-        pageLabel.textContent = nextUrl.searchParams.get("page") - 1;
-      } else {
-        pageLabel.textContent = data.info.pages;
-      }
-
-      nextBtn.disabled = !data.info.next;
-      prevBtn.disabled = !data.info.prev;
-
-      currentPage = page;
+      hasNextPage = Boolean(data.info.next);
+      currentPage++;
     })
     .catch((error) => {
       console.log("Error", error);
     })
     .finally(() => {
+      isLoading = false;
       loading.style.display = "none";
     });
 }
 
-nextBtn.addEventListener("click", () => {
-  loadPage(currentPage + 1);
+container.addEventListener("click", (event) => {
+  const card = event.target.closest(".character-row");
+  if (!card) return;
+
+  const id = card.dataset.id;
+
+  fetch(`${url}/${id}`)
+    .then((data) => data.json())
+    .then((character) => {
+      modalImage.src = character.image;
+      modalName.textContent = character.name;
+      modalStatus.textContent = character.status;
+      modal.classList.remove("hidden");
+    });
 });
 
-prevBtn.addEventListener("click", () => {
-  loadPage(currentPage - 1);
+closeModalBtn.addEventListener("click", () => {
+  modal.classList.add("hidden");
 });
 
-loadPage(1);
+modal.addEventListener("click", (event) => {
+  if (event.target === modal) {
+    modal.classList.add("hidden");
+  }
+});
+
+window.addEventListener("scroll", () => {
+  const bottomReached =
+    window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
+
+  if (bottomReached) {
+    loadPage(currentPage);
+  }
+});
+
+loadPage(currentPage);
