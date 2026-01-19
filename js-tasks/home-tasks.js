@@ -307,48 +307,48 @@
 ! Ці об'єкти мають методи ride() та stop(), базовий клас повинен називатися Transport. 
 */
 
-console.log("HOME TASK: FACTORY PATTERN");
+// console.log("HOME TASK: FACTORY PATTERN");
 
-class Transport {
-  constructor(brand) {
-    this.brand = brand;
-  }
+// class Transport {
+//   constructor(brand) {
+//     this.brand = brand;
+//   }
 
-  stop() {
-    console.log(`Transport has stopped`);
-  }
+//   stop() {
+//     console.log(`Transport has stopped`);
+//   }
 
-  static createTransport(type, brand) {
-    if (type === "car") {
-      return new Car(brand);
-    }
-    if (type === "bike") {
-      return new Bike(brand);
-    } else {
-      throw new Error("Unknown transport type");
-    }
-  }
-}
+//   static createTransport(type, brand) {
+//     if (type === "car") {
+//       return new Car(brand);
+//     }
+//     if (type === "bike") {
+//       return new Bike(brand);
+//     } else {
+//       throw new Error("Unknown transport type");
+//     }
+//   }
+// }
 
-class Car extends Transport {
-  ride() {
-    console.log(`Car ${this.brand} is riding`);
-  }
-}
+// class Car extends Transport {
+//   ride() {
+//     console.log(`Car ${this.brand} is riding`);
+//   }
+// }
 
-class Bike extends Transport {
-  ride() {
-    console.log(`Bike ${this.brand} is riding`);
-  }
-}
+// class Bike extends Transport {
+//   ride() {
+//     console.log(`Bike ${this.brand} is riding`);
+//   }
+// }
 
-const myCar = Transport.createTransport("car", "Tesla");
-myCar.ride();
-myCar.stop();
+// const myCar = Transport.createTransport("car", "Tesla");
+// myCar.ride();
+// myCar.stop();
 
-const myBike = Transport.createTransport("bike", "Cannondale");
-myBike.ride();
-myBike.stop();
+// const myBike = Transport.createTransport("bike", "Cannondale");
+// myBike.ride();
+// myBike.stop();
 
 /*
 ! 2. Робота з DOM:
@@ -377,111 +377,111 @@ myBike.stop();
 ! - при прокрутці донизу списку, підвантажуємо ще порцію карток.
 */
 
-console.log("HOME TASK: WORKING WITH DOM");
+// console.log("HOME TASK: WORKING WITH DOM");
 
-const url = "https://rickandmortyapi.com/api/character";
+// const url = "https://rickandmortyapi.com/api/character";
 
-const container = document.getElementById("characters");
-const loading = document.getElementById("loading");
+// const container = document.getElementById("characters");
+// const loading = document.getElementById("loading");
 
-const modal = document.getElementById("modal");
-const modalImage = document.getElementById("modal-image");
-const modalName = document.getElementById("modal-name");
-const modalStatus = document.getElementById("modal-status");
-const closeModalBtn = document.getElementById("close-modal");
+// const modal = document.getElementById("modal");
+// const modalImage = document.getElementById("modal-image");
+// const modalName = document.getElementById("modal-name");
+// const modalStatus = document.getElementById("modal-status");
+// const closeModalBtn = document.getElementById("close-modal");
 
-let currentPage = 1;
-let isLoading = false;
-let hasNextPage = true;
+// let currentPage = 1;
+// let isLoading = false;
+// let hasNextPage = true;
 
-function loadPage(page) {
-  if (isLoading || !hasNextPage) return;
+// function loadPage(page) {
+//   if (isLoading || !hasNextPage) return;
 
-  isLoading = true;
-  loading.style.display = "block";
+//   isLoading = true;
+//   loading.style.display = "block";
 
-  const response = fetch(`${url}?page=${page}`);
+//   const response = fetch(`${url}?page=${page}`);
 
-  response
-    .then((data) => {
-      if (data.status !== 200) {
-        console.log("Error");
-      }
-      return data.json();
-    })
-    .then((data) => {
-      data.results.forEach((character) => {
-        const row = document.createElement("div");
-        row.className = "character-row";
-        row.dataset.id = character.id;
+//   response
+//     .then((data) => {
+//       if (data.status !== 200) {
+//         console.log("Error");
+//       }
+//       return data.json();
+//     })
+//     .then((data) => {
+//       data.results.forEach((character) => {
+//         const row = document.createElement("div");
+//         row.className = "character-row";
+//         row.dataset.id = character.id;
 
-        const image = document.createElement("img");
-        image.src = character.image;
-        image.className = "character-image";
+//         const image = document.createElement("img");
+//         image.src = character.image;
+//         image.className = "character-image";
 
-        const info = document.createElement("div");
-        info.className = "character-info";
+//         const info = document.createElement("div");
+//         info.className = "character-info";
 
-        const name = document.createElement("p");
-        name.className = "character-name";
-        name.textContent = character.name;
+//         const name = document.createElement("p");
+//         name.className = "character-name";
+//         name.textContent = character.name;
 
-        const status = document.createElement("span");
-        status.className = `character-status status-${character.status.toLowerCase()}`;
-        status.textContent = character.status;
+//         const status = document.createElement("span");
+//         status.className = `character-status status-${character.status.toLowerCase()}`;
+//         status.textContent = character.status;
 
-        info.appendChild(name);
-        info.appendChild(status);
-        row.appendChild(image);
-        row.appendChild(info);
-        container.appendChild(row);
-      });
+//         info.appendChild(name);
+//         info.appendChild(status);
+//         row.appendChild(image);
+//         row.appendChild(info);
+//         container.appendChild(row);
+//       });
 
-      hasNextPage = Boolean(data.info.next);
-      currentPage++;
-    })
-    .catch((error) => {
-      console.log("Error", error);
-    })
-    .finally(() => {
-      isLoading = false;
-      loading.style.display = "none";
-    });
-}
+//       hasNextPage = Boolean(data.info.next);
+//       currentPage++;
+//     })
+//     .catch((error) => {
+//       console.log("Error", error);
+//     })
+//     .finally(() => {
+//       isLoading = false;
+//       loading.style.display = "none";
+//     });
+// }
 
-container.addEventListener("click", (event) => {
-  const card = event.target.closest(".character-row");
-  if (!card) return;
+// container.addEventListener("click", (event) => {
+//   const card = event.target.closest(".character-row");
+//   if (!card) return;
 
-  const id = card.dataset.id;
+//   const id = card.dataset.id;
 
-  fetch(`${url}/${id}`)
-    .then((data) => data.json())
-    .then((character) => {
-      modalImage.src = character.image;
-      modalName.textContent = character.name;
-      modalStatus.textContent = character.status;
-      modal.classList.remove("hidden");
-    });
-});
+//   fetch(`${url}/${id}`)
+//     .then((data) => data.json())
+//     .then((character) => {
+//       modalImage.src = character.image;
+//       modalName.textContent = character.name;
+//       modalStatus.textContent = character.status;
+//       modal.classList.remove("hidden");
+//     });
+// });
 
-closeModalBtn.addEventListener("click", () => {
-  modal.classList.add("hidden");
-});
+// closeModalBtn.addEventListener("click", () => {
+//   modal.classList.add("hidden");
+// });
 
-modal.addEventListener("click", (event) => {
-  if (event.target === modal) {
-    modal.classList.add("hidden");
-  }
-});
+// modal.addEventListener("click", (event) => {
+//   if (event.target === modal) {
+//     modal.classList.add("hidden");
+//   }
+// });
 
-window.addEventListener("scroll", () => {
-  const bottomReached =
-    window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
+// window.addEventListener("scroll", () => {
+//   const bottomReached =
+//     window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
 
-  if (bottomReached) {
-    loadPage(currentPage);
-  }
-});
+//   if (bottomReached) {
+//     loadPage(currentPage);
+//   }
+// });
 
-loadPage(currentPage);
+// loadPage(currentPage);
