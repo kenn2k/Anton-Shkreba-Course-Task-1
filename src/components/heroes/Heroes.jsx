@@ -76,11 +76,7 @@ export const Heroes = () => {
         open={isDrawerOpen}
         onClose={() => navigate("/heroes")}
       >
-        <Box sx={{ width: 360, p: 2 }}>
-          {heroId && (
-            <HeroById heroes={heroes} loading={loading} error={error} />
-          )}
-        </Box>
+        <Box sx={{ width: 360, p: 2 }}>{heroId && <HeroById />}</Box>
       </Drawer>
     </>
   );

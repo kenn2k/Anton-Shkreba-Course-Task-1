@@ -1,36 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-// import { getHeroById } from "./api/fetchHeroes";
+import { getHeroById } from "./api/fetchHeroes";
 import { Alert, Box, CircularProgress, Typography } from "@mui/material";
 
-export const HeroById = ({ heroes, loading, error }) => {
+export const HeroById = () => {
   const { heroId } = useParams();
 
-  //* I found a way to find a hero by ID locally from hero
-  const hero = heroes.find((char) => String(char.id) === heroId);
+  const [hero, setHero] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!hero) {
-    return <Alert severity="error">Hero not found</Alert>;
-  }
+  useEffect(() => {
+    async function fetchHero() {
+      try {
+        const data = await getHeroById(heroId);
+        setHero(data);
+      } catch (e) {
+        setError("Failed to load hero");
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  // const [hero, setHero] = useState(null);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-
-  // useEffect(() => {
-  //   async function fetchHero() {
-  //     try {
-  //       const data = await getHeroById(heroId);
-  //       setHero(data);
-  //     } catch (e) {
-  //       setError("Failed to load hero");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-
-  //   fetchHero();
-  // }, [heroId]);
+    fetchHero();
+  }, [heroId]);
 
   if (loading) return <CircularProgress />;
   if (error) return <Alert severity="error">{error}</Alert>;
